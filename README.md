@@ -137,7 +137,7 @@ In `manifest.yml`, change the Java buildpack JRE version from `version: 17.+` to
 
 Use the Following `tanzu` commands to deploy app on TPK8.
 
-**Note** : If you are on using broadcom machine , disable `Symantec wss agent temporarily` to allow push app image into your image registry.
+**Note** : If you are using broadcom machine , disable `Symantec wss agent temporarily` to allow push app image into your image registry.
 
 **Prerequisite** before deploying `spring-music` app on Tanzu platform space. 
  - Create a space with spring-dev and custom networking profile. Refer to the [create app environment instructions](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-create-app-envmt.html) 
