@@ -130,3 +130,78 @@ In `manifest.yml`, change the Java buildpack JRE version from `version: 17.+` to
 ~~~
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
 ~~~
+
+
+
+## Running the application on Tanzu platform on K8(TPK8).
+
+Use the Following `tanzu` commands to deploy app on TPK8.
+**Note** : If you are on using broadcom machine , disable `Symantec wss agent temporarily` to allow push app image into your image registry.
+
+Prerequisite before deploying spring-music app on TP space. 
+ - Create a space with spring-dev and custom networking profile. Refer to the [create app environment instructions](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-create-app-envmt.html) 
+
+```
+Deployment instructions :
+
+#Checkout spring music app git repo 
+git clone https://github.com/sendjainabhi/spring-music.git
+
+#switch to spring-music directory 
+cd spring-music
+
+#switch to demo-flow branch
+git checkout demo-flow
+
+#login to tanzu platform
+tanzu login
+
+#switch to project 
+tanzu project use <your tanzu platform project name>
+
+#switch to space 
+tanzu space use <your tanzu platform space name>
+
+#Set java jvm env var to 17 , tpk8 default is jvm is 11 
+tanzu app config build non-secret-env set BP_JVM_VERSION=17
+
+#set tanzu registry for container app  (use git hub container registry )
+tanzu build config --containerapp-registry ghcr.io/<git use name>/spring-music
+
+#Docker login for app image push
+docker login --username <git user name> --password <git token> ghcr.io
+
+#tanzu build and push app image command 
+tanzu build --output-dir /stage
+
+#tanzu deploy from local directory command 
+tanzu deploy --from-build /stage
+
+#tanzu deploy for build and deploy app together
+tanzu deploy 
+
+Note - change the package visibility to public in GitHub registry,otherwise it will block kapp controller to pull your app image on space. 
+
+#to deploy multiple apps on 1 space without overwriting use command 
+tanzu deploy --patch 
+
+#Show the services in space
+tanzu services list   
+
+# list all the available services that you can dynamically create
+tanzu services type list
+
+#create an instance of MySQL named spring-music-db
+tanzu service create MySQLInstance/spring-music-db
+
+#bind the db to the spring-music app
+tanzu service bind MySQLInstance/spring-music-db ContinerApp/spring-music 
+
+
+#show that the app is bound to the database (if deploying, discussing that it's automatically restarting)
+tanzu app list 
+
+# show how to scale the app by adding replicas or changing cpu/mem
+tanzu app scale 
+
+```
