@@ -136,6 +136,7 @@ In `manifest.yml`, change the Java buildpack JRE version from `version: 17.+` to
 ## Running the application on Tanzu platform on K8(TPK8).
 
 Use the Following `tanzu` commands to deploy app on TPK8.
+
 **Note** : If you are on using broadcom machine , disable `Symantec wss agent temporarily` to allow push app image into your image registry.
 
 **Prerequisite** before deploying `spring-music` app on Tanzu platform space. 
