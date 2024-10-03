@@ -138,8 +138,9 @@ In `manifest.yml`, change the Java buildpack JRE version from `version: 17.+` to
 Use the Following `tanzu` commands to deploy app on TPK8.
 **Note** : If you are on using broadcom machine , disable `Symantec wss agent temporarily` to allow push app image into your image registry.
 
-Prerequisite before deploying spring-music app on TP space. 
+**Prerequisite** before deploying `spring-music` app on Tanzu platform space. 
  - Create a space with spring-dev and custom networking profile. Refer to the [create app environment instructions](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-create-app-envmt.html) 
+ - Download `tanzu cli` and its developer plugins.
 
 ```
 Deployment instructions :
@@ -165,7 +166,7 @@ tanzu space use <your tanzu platform space name>
 #Set java jvm env var to 17 , tpk8 default is jvm is 11 
 tanzu app config build non-secret-env set BP_JVM_VERSION=17
 
-#set tanzu registry for container app  (use git hub container registry )
+#set tanzu registry for container app  (used git hub container registry, you can select of your choice )
 tanzu build config --containerapp-registry ghcr.io/<git use name>/spring-music
 
 #Docker login for app image push
