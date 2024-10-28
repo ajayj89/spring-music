@@ -1,0 +1,92 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  annotations:
+    apps.tanzu.vmware.com/promotable: ""
+    apps.tanzu.vmware.com/promote-group: ContainerApp/spring-music
+    containerapp.apps.tanzu.vmware.com/class: kubernetes
+  name: spring-music
+spec:
+  content:
+    buildTimestamp: "2024-10-23T19:33:06Z"
+    gitCommit: 3ffe0eaeb36ca036c465419a0cfd90da2a29c1dc-dirty
+    gitURL: github.com/sendjainabhi/spring-music.git
+    packageImage: ghcr.io/sendjainabhi/spring-music@sha256:c9a43ba78e5b98142fc9e2f5c8b1962e54fadfbc55c1d1b52955ea7cdbbb712e
+    packageRefName: spring-music.apps.local
+    packageVersion: 20241023.1933.6876
+    summary: git:3ffe0ea @ 2024-10-23T19:33:06Z
+    version: 20241023.1933.6876
+  health:
+    maxUnavailableReplicas: 10%
+  image: ghcr.io/sendjainabhi/spring-music:20241023.1933.6876@sha256:f776a971b682431521ec338696b2916e87fca36eb3a29c39cb9601ce1113bb4e
+  nonSecretEnv:
+  - name: JAVA_TOOL_OPTIONS
+    value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
+      -Dserver.port=8080 -Dserver.shutdown.grace-period=24s
+  ports:
+  - name: main
+    port: 8080
+  probes:
+    liveness:
+      httpGet:
+        path: /livez
+        port: 8080
+        scheme: HTTP
+    readiness:
+      httpGet:
+        path: /readyz
+        port: 8080
+        scheme: HTTP
+    startup:
+      failureThreshold: 120
+      httpGet:
+        path: /readyz
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 1
+      periodSeconds: 1
+  relatedRefs:
+  - for: kubernetes.list-replicas
+    kind: Pod
+    labelSelector: containerapp.apps.tanzu.vmware.com/app-name=spring-music
+  - apiGroup: apps
+    for: kubernetes.service-binding-target
+    kind: Deployment
+    name: spring-music
+  - for: kubernetes.service-target
+    kind: Service
+    name: spring-music
+  - for: kubernetes.scale-replicas
+    keyPath: .data['values.yml']->[yaml].replicas
+    kind: Secret
+    name: spring-music-values
+  - for: kubernetes.scale-resources
+    keyPath: .data['values.yml']->[yaml].resources
+    kind: Secret
+    name: spring-music-values
+  - for: kubernetes.set-secret-env
+    keyPath: .data['values.yml']->[yaml].secretEnv
+    kind: Secret
+    name: spring-music-values
+  - apiGroup: packaging.carvel.dev
+    for: kubernetes.delete
+    kind: PackageInstall
+    name: spring-music
+  - apiGroup: data.packaging.carvel.dev
+    for: kubernetes.delete
+    kind: Package
+    name: spring-music.apps.local.20241023.1933.6876
+  - for: kubernetes.delete
+    kind: Secret
+    name: spring-music-values
+  - for: kubernetes.set-content-hash
+    keyPath: .data['values.yml']->[yaml].contentHash
+    kind: Secret
+    name: spring-music-values
+  - for: kubernetes.set-content-version
+    keyPath: .data['values.yml']->[yaml].contentVersion
+    kind: Secret
+    name: spring-music-values
+  resources:
+    cpu: 300m
+    memory: 1Gi

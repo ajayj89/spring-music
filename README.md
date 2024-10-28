@@ -167,6 +167,18 @@ tanzu space use <your tanzu platform space name>
 #Set java jvm env var to 17 , tpk8 default is jvm is 11 
 tanzu app config build non-secret-env set BP_JVM_VERSION=17
 
+#tanzu app init with following params
+tanzu app init
+? What is your app's name? spring-music
+? Would you like to replace all existing content of the current spring-music.yml? Yes
+? Which directory contains your app's source code? .
+? Select container build type to use for this app: buildpacks
+? Should your app be accessible through HTTP? Yes
+
+✓ Created tanzu.yml
+✓ Recorded app configuration to .tanzu/config/spring-music.yml
+
+
 #set tanzu registry for container app  (used git hub container registry, you can select of your choice )
 tanzu build config --containerapp-registry ghcr.io/<git use name>/spring-music
 
