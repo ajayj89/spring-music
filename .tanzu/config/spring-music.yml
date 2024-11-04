@@ -6,7 +6,7 @@ spec:
   acceptedServiceBindings:
     - name: mysql
       types:
-        - mysql
+      - mysql
   build:
     buildpacks: {}
     nonSecretEnv:
