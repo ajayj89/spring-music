@@ -3,6 +3,10 @@ kind: ContainerApp
 metadata:
   name: spring-music
 spec:
+  acceptedServiceBindings:
+    - name: mysql
+      types:
+        - mysql
   build:
     buildpacks: {}
     nonSecretEnv:
