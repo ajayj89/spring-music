@@ -5,9 +5,9 @@ metadata:
   name: spring-music
 spec:
   acceptedServiceBindings:
-  - name: redis
+  - name: mysql
     types:
-    - redis
+    - mysql
   build:
     buildpacks: {}
     nonSecretEnv:

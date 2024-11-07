@@ -78,4 +78,6 @@ jar {
 
 tasks.named("bootBuildImage") {
     builder = "paketobuildpacks/builder-jammy-base:latest"
+    buildpacks = "docker.io/paketobuildpacks/appdynamics"
+    binding("bindings/:/platform/bindings")
 }
