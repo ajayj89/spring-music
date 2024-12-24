@@ -13,6 +13,8 @@ spec:
     nonSecretEnv:
     - name: BP_JVM_VERSION
       value: "17"
+    - name: BP_EMBED_CERTS
+      value: "true"
     path: ../..
   ports:
   - name: main

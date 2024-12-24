@@ -1,0 +1,6 @@
+tpsm*
+sm-*
+build
+gradle*
+.idea*
+.gradle*
